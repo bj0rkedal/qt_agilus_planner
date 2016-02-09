@@ -1,0 +1,12 @@
+Header header
+bool relative
+bool set_position
+float64 position_x
+float64 position_y
+float64 position_z
+bool set_orientation
+float64 orientation_r
+float64 orientation_p
+float64 orientation_y
+---
+float64 progress
