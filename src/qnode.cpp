@@ -124,5 +124,4 @@ void QNode::plan_ag2(bool relative, bool position, double x, double y, double z,
     planClient_ag2.call(pose_service);
 }
 
-
 }

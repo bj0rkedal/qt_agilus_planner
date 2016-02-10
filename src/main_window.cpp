@@ -12,6 +12,7 @@
 #include <QtGui>
 #include <QMessageBox>
 #include <iostream>
+#include <cmath>
 #include "../include/qt_agilus_planner/main_window.hpp"
 
 
@@ -56,44 +57,65 @@ MainWindow::~MainWindow() {}
 void MainWindow::on_pushButton_move_ag1_clicked(){
     Q_EMIT send_move_ag1_command(ui.checkBox_relative->isChecked(), ui.checkBox_position->isChecked(),
                                  ui.spinBox_pos_x->value(),ui.spinBox_pos_y->value(),ui.spinBox_pos_z->value(),
-                                 ui.checkBox_orientation->isChecked(),ui.doubleSpinBox_roll->value(),
-                                 ui.doubleSpinBox_pitch->value(),ui.doubleSpinBox_yaw->value());
+                                 ui.checkBox_orientation->isChecked(),ui.spinBox_roll->value(),
+                                 ui.spinBox_pitch->value(),ui.spinBox_yaw->value());
 }
 
 void MainWindow::on_pushButton_move_ag2_clicked(){
     Q_EMIT send_move_ag2_command(ui.checkBox_relative->isChecked(), ui.checkBox_position->isChecked(),
                                  ui.spinBox_pos_x->value(),ui.spinBox_pos_y->value(),ui.spinBox_pos_z->value(),
-                                 ui.checkBox_orientation->isChecked(),ui.doubleSpinBox_roll->value(),
-                                 ui.doubleSpinBox_pitch->value(),ui.doubleSpinBox_yaw->value());
+                                 ui.checkBox_orientation->isChecked(),ui.spinBox_roll->value(),
+                                 ui.spinBox_pitch->value(),ui.spinBox_yaw->value());
 }
 
 void MainWindow::on_pushButton_plan_ag1_clicked(){
     Q_EMIT send_plan_ag1_command(ui.checkBox_relative->isChecked(), ui.checkBox_position->isChecked(),
                                  ui.spinBox_pos_x->value(),ui.spinBox_pos_y->value(),ui.spinBox_pos_z->value(),
-                                 ui.checkBox_orientation->isChecked(),ui.doubleSpinBox_roll->value(),
-                                 ui.doubleSpinBox_pitch->value(),ui.doubleSpinBox_yaw->value());
+                                 ui.checkBox_orientation->isChecked(),ui.spinBox_roll->value(),
+                                 ui.spinBox_pitch->value(),ui.spinBox_yaw->value());
 }
 
 void MainWindow::on_pushButton_plan_ag2_clicked(){
     Q_EMIT send_plan_ag2_command(ui.checkBox_relative->isChecked(), ui.checkBox_position->isChecked(),
                                  ui.spinBox_pos_x->value(),ui.spinBox_pos_y->value(),ui.spinBox_pos_z->value(),
-                                 ui.checkBox_orientation->isChecked(),ui.doubleSpinBox_roll->value(),
-                                 ui.doubleSpinBox_pitch->value(),ui.doubleSpinBox_yaw->value());
+                                 ui.checkBox_orientation->isChecked(),ui.spinBox_roll->value(),
+                                 ui.spinBox_pitch->value(),ui.spinBox_yaw->value());
 }
 
-void MainWindow::on_horizontalSlider_valueChanged(int i)
+void MainWindow::on_horizontalSlider_pos_x_valueChanged(int i)
 {
-    std::cout << "slider 1 value: " << i << std::endl;
+    double tmp = i/100.0;
+    ui.spinBox_pos_x->setValue(ui.spinBox_pos_x->minimum()+(tmp*(ui.spinBox_pos_x->maximum()*2)));
 }
 
-void MainWindow::on_horizontalSlider_2_valueChanged(int i)
+void MainWindow::on_horizontalSlider_pos_y_valueChanged(int i)
 {
-    std::cout << "slider 2 value: " << i << std::endl;
+    double tmp = i/100.0;
+    ui.spinBox_pos_y->setValue(ui.spinBox_pos_y->minimum()+(tmp*(ui.spinBox_pos_y->maximum()*2)));
 }
 
-void MainWindow::on_horizontalSlider_3_valueChanged(int i)
+void MainWindow::on_horizontalSlider_pos_z_valueChanged(int i)
 {
-    std::cout << "slider 3 value: " << i << std::endl;
+    double tmp = i/100.0;
+    ui.spinBox_pos_z->setValue(ui.spinBox_pos_z->minimum()+(tmp*(ui.spinBox_pos_z->maximum()*2)));
+}
+
+void MainWindow::on_horizontalSlider_roll_valueChanged(int i)
+{
+    double tmp = i/100.0;
+    ui.spinBox_roll->setValue(ui.spinBox_roll->minimum()+(tmp*(ui.spinBox_roll->maximum()*2)));
+}
+
+void MainWindow::on_horizontalSlider_pitch_valueChanged(int i)
+{
+    double tmp = i/100.0;
+    ui.spinBox_pitch->setValue(ui.spinBox_pitch->minimum()+(tmp*(ui.spinBox_pitch->maximum()*2)));
+}
+
+void MainWindow::on_horizontalSlider_yaw_valueChanged(int i)
+{
+    double tmp = i/100.0;
+    ui.spinBox_yaw->setValue(ui.spinBox_yaw->minimum()+(tmp*(ui.spinBox_yaw->maximum()*2)));
 }
 
 

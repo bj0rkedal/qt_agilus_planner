@@ -43,9 +43,12 @@ public Q_SLOTS:
     void on_pushButton_move_ag2_clicked();
     void on_pushButton_plan_ag1_clicked();
     void on_pushButton_plan_ag2_clicked();
-    void on_horizontalSlider_valueChanged(int i);
-    void on_horizontalSlider_2_valueChanged(int i);
-    void on_horizontalSlider_3_valueChanged(int i);
+    void on_horizontalSlider_pos_x_valueChanged(int i);
+    void on_horizontalSlider_pos_y_valueChanged(int i);
+    void on_horizontalSlider_pos_z_valueChanged(int i);
+    void on_horizontalSlider_roll_valueChanged(int i);
+    void on_horizontalSlider_pitch_valueChanged(int i);
+    void on_horizontalSlider_yaw_valueChanged(int i);
 
 Q_SIGNALS:
     void send_move_ag1_command(bool rel, bool pos, double x, double y, double z,
