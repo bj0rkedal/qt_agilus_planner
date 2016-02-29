@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<launch>
+  <node name="qt_agilus_planner_1" pkg="qt_agilus_planner"
+	type="qt_agilus_planner" output="screen"/>
+	
+
+
+  <node name="qt_agilus_planner_2" pkg="qt_agilus_planner"
+	type="qt_agilus_planner" output="screen"/>
+	
+
+
+</launch>

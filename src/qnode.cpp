@@ -30,7 +30,7 @@ namespace qt_agilus_planner {
 QNode::QNode(int argc, char** argv ) :
 	init_argc(argc),
 	init_argv(argv)
-	{}
+    {}
 
 QNode::~QNode() {
     if(ros::isStarted()) {
@@ -41,12 +41,12 @@ QNode::~QNode() {
 }
 
 bool QNode::init() {
-	ros::init(init_argc,init_argv,"qt_agilus_planner");
+    ros::init(init_argc,init_argv,"qt_agilus_planner");
 	if ( ! ros::master::check() ) {
 		return false;
 	}
 	ros::start(); // explicitly needed since our nodehandle is going out of scope.
-	ros::NodeHandle n;
+    ros::NodeHandle n("~");
 	// Add your ros communications here.
 
     goToClient_ag1 = n.serviceClient<qt_agilus_planner::Pose>("/robot_service_ag1/go_to_pose");
