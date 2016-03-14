@@ -14,6 +14,7 @@ find_package(catkin REQUIRED COMPONENTS
   qt_build
   roscpp
   std_msgs
+  geometry_msgs
   moveit_ros_planning_interface
   genmsg
   message_generation

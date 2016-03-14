@@ -21,6 +21,7 @@
 #include <QThread>
 #include <QStringListModel>
 #include <qt_agilus_planner/Pose.h>
+#include <geometry_msgs/Pose2D.h>
 
 
 /*****************************************************************************
@@ -56,6 +57,10 @@ public:
 Q_SIGNALS:
     void rosShutdown();
 
+public:
+    void object1PoseCallback(const geometry_msgs::Pose2DConstPtr &msg);
+    void object2PoseCallback(const geometry_msgs::Pose2DConstPtr &msg);
+
 public Q_SLOTS:
     void setPoseRequest(bool relative, bool position,
                         double x, double y, double z,
@@ -79,6 +84,9 @@ private:
     ros::ServiceClient planClient_ag1;
     ros::ServiceClient planClient_ag2;
     qt_agilus_planner::Pose pose_service;
+    ros::Subscriber object2Dpose1;
+    ros::Subscriber object2Dpose2;
+
 };
 
 }  // namespace qt_agilus_planner

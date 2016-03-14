@@ -54,6 +54,14 @@ bool QNode::init() {
     planClient_ag1 = n.serviceClient<qt_agilus_planner::Pose>("/robot_service_ag1/plan_pose");
     planClient_ag2 = n.serviceClient<qt_agilus_planner::Pose>("/robot_service_ag2/plan_pose");
 
+    object2Dpose1 = n.subscribe<geometry_msgs::Pose2D,QNode>("/object_2D_detected/object1", 1000, &QNode::object1PoseCallback,this);
+    object2Dpose2 = n.subscribe<geometry_msgs::Pose2D,QNode>("/object_2D_detected/object2", 1000, &QNode::object2PoseCallback,this);
+
+    plan_ag1(1,1,0,0,0,1,0,0,0);
+    plan_ag1(1,1,0,0,0,1,0,0,0);
+    plan_ag2(1,1,0,0,0,1,0,0,0);
+    plan_ag2(1,1,0,0,0,1,0,0,0);
+
 	start();
 	return true;
 }
@@ -80,6 +88,20 @@ void QNode::run() {
 		loop_rate.sleep();
 	}
     Q_EMIT rosShutdown(); // used to signal the gui for a shutdown (useful to roslaunch)
+}
+
+void QNode::object1PoseCallback(const geometry_msgs::Pose2DConstPtr &msg)
+{
+    std::cout << msg->x << std::endl;
+    std::cout << msg->y << std::endl;
+    std::cout << msg->theta << std::endl;
+}
+
+void QNode::object2PoseCallback(const geometry_msgs::Pose2DConstPtr &msg)
+{
+    std::cout << msg->x << std::endl;
+    std::cout << msg->y << std::endl;
+    std::cout << msg->theta << std::endl;
 }
 
 void QNode::setPoseRequest(bool relative, bool position, double x, double y, double z, bool orientation, double roll, double pitch, double yaw)
