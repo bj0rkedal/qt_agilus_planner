@@ -20,6 +20,11 @@ find_package(catkin REQUIRED COMPONENTS
   message_generation
 )
 
+find_package(PkgConfig REQUIRED)
+pkg_search_module(EIGEN REQUIRED eigen3)
+
+find_package(OpenCV REQUIRED)
+
 include_directories(${catkin_INCLUDE_DIRS})
 
 ## Generate services in the 'srv' folder
@@ -38,6 +43,14 @@ generate_messages(
 # Since the default here is to produce only a binary, we don't worry about
 # exporting anything. 
 catkin_package()
+
+include_directories(
+  ${OpenCV_INCLUDE_DIRS}
+)
+
+include_directories(
+  ${EIGEN_INCLUDE_DIRS}
+)
 
 ##############################################################################
 # Qt Environment
@@ -70,6 +83,6 @@ file(GLOB_RECURSE QT_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} FOLLOW_SYMLINK
 ##############################################################################
 
 add_executable(qt_agilus_planner ${QT_SOURCES} ${QT_RESOURCES_CPP} ${QT_FORMS_HPP} ${QT_MOC_HPP})
-target_link_libraries(qt_agilus_planner ${QT_LIBRARIES} ${catkin_LIBRARIES})
+target_link_libraries(qt_agilus_planner ${QT_LIBRARIES} ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 install(TARGETS qt_agilus_planner RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 

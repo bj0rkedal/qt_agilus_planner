@@ -82,6 +82,17 @@ void MainWindow::on_pushButton_plan_ag2_clicked(){
                                  ui.spinBox_pitch->value(),ui.spinBox_yaw->value());
 }
 
+void MainWindow::on_pushButton_get_offset1_clicked()
+{
+    std::vector<double> temp;
+    temp = qnode.getobjectPose();
+    std::cout << temp.at(0) << std::endl;
+
+    ui.spinBox_pos_x->setValue(-temp.at(1));
+    ui.spinBox_pos_y->setValue(-temp.at(0));
+
+}
+
 void MainWindow::on_horizontalSlider_pos_x_valueChanged(int i)
 {
     double tmp = i/100.0;

@@ -23,6 +23,11 @@
 #include <qt_agilus_planner/Pose.h>
 #include <geometry_msgs/Pose2D.h>
 
+#include <eigen3/Eigen/Dense>
+
+#include "opencv2/core.hpp"
+
+const std::string CAMERA_PARAMS = "/home/minions/Documents/calibration_reserve_camera.yml";
 
 /*****************************************************************************
 ** Namespaces
@@ -60,6 +65,9 @@ Q_SIGNALS:
 public:
     void object1PoseCallback(const geometry_msgs::Pose2DConstPtr &msg);
     void object2PoseCallback(const geometry_msgs::Pose2DConstPtr &msg);
+    cv::Mat getCameraMatrix(const std::string path);
+    Eigen::Vector3d getNormImageCoords(double x, double y, double lambda, cv::Mat camera_matrix);
+    std::vector<double> getobjectPose();
 
 public Q_SLOTS:
     void setPoseRequest(bool relative, bool position,
@@ -86,6 +94,11 @@ private:
     qt_agilus_planner::Pose pose_service;
     ros::Subscriber object2Dpose1;
     ros::Subscriber object2Dpose2;
+
+    double x_object1;
+    double y_object1;
+    double lambda1;
+    cv::Mat camera_matrix;
 
 };
 

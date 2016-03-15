@@ -62,6 +62,8 @@ bool QNode::init() {
     plan_ag2(1,1,0,0,0,1,0,0,0);
     plan_ag2(1,1,0,0,0,1,0,0,0);
 
+    camera_matrix = getCameraMatrix(CAMERA_PARAMS);
+
 	start();
 	return true;
 }
@@ -92,16 +94,52 @@ void QNode::run() {
 
 void QNode::object1PoseCallback(const geometry_msgs::Pose2DConstPtr &msg)
 {
-    std::cout << msg->x << std::endl;
-    std::cout << msg->y << std::endl;
-    std::cout << msg->theta << std::endl;
+    x_object1 = msg->x;
+    y_object1 = msg->y;
+}
+
+std::vector<double> QNode::getobjectPose(){
+    Eigen::Vector3d imageCoords = getNormImageCoords(x_object1, y_object1, 0.15, camera_matrix);
+    std::vector<double> returnvalue;
+    returnvalue.push_back(imageCoords(0));
+    returnvalue.push_back(imageCoords(1));
+    return (returnvalue);
 }
 
 void QNode::object2PoseCallback(const geometry_msgs::Pose2DConstPtr &msg)
 {
-    std::cout << msg->x << std::endl;
-    std::cout << msg->y << std::endl;
-    std::cout << msg->theta << std::endl;
+
+}
+
+cv::Mat QNode::getCameraMatrix(const std::string path)
+{
+    cv::Mat temp;
+    cv::FileStorage fs(path, cv::FileStorage::READ);
+    fs["camera_matrix"] >> temp;
+    fs.release();
+
+    return temp;
+}
+
+Eigen::Vector3d QNode::getNormImageCoords(double x, double y, double lambda, cv::Mat camera_matrix)
+{
+    Eigen::Vector3d pixelCoords;
+    Eigen::Vector3d normCoords;
+    Eigen::Matrix3d camMat;
+
+    camMat << camera_matrix.at<double>(0,0),0,camera_matrix.at<double>(0,2),
+              0,camera_matrix.at<double>(1,1),camera_matrix.at<double>(1,2),
+              0,0,1;
+
+    pixelCoords(0) = x;
+    pixelCoords(1) = y;
+    pixelCoords(2) = 1;
+
+    Eigen::Matrix3d icamMat = camMat.inverse();
+
+    normCoords = icamMat*pixelCoords;
+
+    return lambda*normCoords;
 }
 
 void QNode::setPoseRequest(bool relative, bool position, double x, double y, double z, bool orientation, double roll, double pitch, double yaw)
