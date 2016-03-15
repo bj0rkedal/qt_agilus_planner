@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>508</width>
+    <width>780</width>
     <height>400</height>
    </rect>
   </property>
@@ -22,29 +22,10 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="7" column="2">
-     <widget class="QDoubleSpinBox" name="spinBox_roll">
-      <property name="decimals">
-       <number>6</number>
-      </property>
-      <property name="minimum">
-       <double>-3.141500000000000</double>
-      </property>
-      <property name="maximum">
-       <double>3.141500000000000</double>
-      </property>
-      <property name="singleStep">
-       <double>0.010000000000000</double>
-      </property>
-     </widget>
-    </item>
-    <item row="9" column="1">
-     <widget class="QLabel" name="label_6">
+    <item row="7" column="4">
+     <widget class="QLabel" name="label_roll">
       <property name="text">
-       <string>Yaw</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
+       <string>Gimbal Roll</string>
       </property>
      </widget>
     </item>
@@ -74,6 +55,93 @@
       </property>
      </widget>
     </item>
+    <item row="12" column="2">
+     <widget class="QPushButton" name="pushButton_move_ag2">
+      <property name="text">
+       <string>Move Agilus2</string>
+      </property>
+     </widget>
+    </item>
+    <item row="12" column="1">
+     <widget class="QPushButton" name="pushButton_plan_ag2">
+      <property name="text">
+       <string>Plan Agilus2</string>
+      </property>
+     </widget>
+    </item>
+    <item row="11" column="3">
+     <widget class="QPushButton" name="pushButton_get_offset1">
+      <property name="text">
+       <string>GET OFFSET</string>
+      </property>
+     </widget>
+    </item>
+    <item row="8" column="3">
+     <widget class="QSlider" name="horizontalSlider_pitch">
+      <property name="maximum">
+       <number>100</number>
+      </property>
+      <property name="value">
+       <number>50</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="9" column="2">
+     <widget class="QDoubleSpinBox" name="spinBox_yaw">
+      <property name="decimals">
+       <number>6</number>
+      </property>
+      <property name="minimum">
+       <double>-3.141500000000000</double>
+      </property>
+      <property name="maximum">
+       <double>3.141500000000000</double>
+      </property>
+      <property name="singleStep">
+       <double>0.010000000000000</double>
+      </property>
+     </widget>
+    </item>
+    <item row="9" column="3">
+     <widget class="QSlider" name="horizontalSlider_yaw">
+      <property name="maximum">
+       <number>100</number>
+      </property>
+      <property name="value">
+       <number>50</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="11" column="1">
+     <widget class="QPushButton" name="pushButton_plan_ag1">
+      <property name="text">
+       <string>Plan Agilus1</string>
+      </property>
+     </widget>
+    </item>
+    <item row="11" column="2">
+     <widget class="QPushButton" name="pushButton_move_ag1">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="text">
+       <string>Move Agilus1</string>
+      </property>
+     </widget>
+    </item>
+    <item row="8" column="4">
+     <widget class="QLabel" name="label_pitch">
+      <property name="text">
+       <string>Gimbal Pitch</string>
+      </property>
+     </widget>
+    </item>
     <item row="7" column="1">
      <widget class="QLabel" name="label_4">
       <property name="text">
@@ -94,23 +162,111 @@
       </property>
      </widget>
     </item>
-    <item row="5" column="1">
-     <widget class="QLabel" name="label_3">
+    <item row="7" column="2">
+     <widget class="QDoubleSpinBox" name="spinBox_roll">
+      <property name="decimals">
+       <number>6</number>
+      </property>
+      <property name="minimum">
+       <double>-3.141500000000000</double>
+      </property>
+      <property name="maximum">
+       <double>3.141500000000000</double>
+      </property>
+      <property name="singleStep">
+       <double>0.010000000000000</double>
+      </property>
+     </widget>
+    </item>
+    <item row="9" column="1">
+     <widget class="QLabel" name="label_6">
       <property name="text">
-       <string>z</string>
+       <string>Yaw</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
       </property>
      </widget>
     </item>
-    <item row="3" column="1">
-     <widget class="QLabel" name="label">
+    <item row="9" column="4">
+     <widget class="QLabel" name="label_yaw">
       <property name="text">
-       <string>x</string>
+       <string>Gimbal Yaw</string>
       </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
+     </widget>
+    </item>
+    <item row="7" column="3">
+     <widget class="QSlider" name="horizontalSlider_roll">
+      <property name="maximum">
+       <number>100</number>
+      </property>
+      <property name="value">
+       <number>50</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="13" column="3">
+     <spacer name="verticalSpacer">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>40</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="2" column="1">
+     <widget class="QCheckBox" name="checkBox_position">
+      <property name="text">
+       <string>Set position</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="2">
+     <widget class="QDoubleSpinBox" name="spinBox_pos_y">
+      <property name="decimals">
+       <number>6</number>
+      </property>
+      <property name="minimum">
+       <double>-2.000000000000000</double>
+      </property>
+      <property name="maximum">
+       <double>2.000000000000000</double>
+      </property>
+      <property name="singleStep">
+       <double>0.001000000000000</double>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="1">
+     <widget class="QCheckBox" name="checkBox_orientation">
+      <property name="text">
+       <string>Set orientation</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="2">
+     <widget class="QDoubleSpinBox" name="spinBox_pos_z">
+      <property name="decimals">
+       <number>6</number>
+      </property>
+      <property name="minimum">
+       <double>-2.000000000000000</double>
+      </property>
+      <property name="maximum">
+       <double>2.000000000000000</double>
+      </property>
+      <property name="singleStep">
+       <double>0.001000000000000</double>
       </property>
      </widget>
     </item>
@@ -153,6 +309,26 @@
       </property>
      </widget>
     </item>
+    <item row="5" column="1">
+     <widget class="QLabel" name="label_3">
+      <property name="text">
+       <string>z</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>x</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
     <item row="4" column="3">
      <widget class="QSlider" name="horizontalSlider_pos_y">
       <property name="maximum">
@@ -182,158 +358,40 @@
       </property>
      </widget>
     </item>
-    <item row="4" column="2">
-     <widget class="QDoubleSpinBox" name="spinBox_pos_y">
-      <property name="decimals">
-       <number>6</number>
-      </property>
+    <item row="7" column="5">
+     <widget class="QDoubleSpinBox" name="spinBox_roll_gimbal">
       <property name="minimum">
-       <double>-2.000000000000000</double>
+       <double>-90.000000000000000</double>
       </property>
       <property name="maximum">
-       <double>2.000000000000000</double>
-      </property>
-      <property name="singleStep">
-       <double>0.001000000000000</double>
+       <double>90.000000000000000</double>
       </property>
      </widget>
     </item>
-    <item row="5" column="2">
-     <widget class="QDoubleSpinBox" name="spinBox_pos_z">
-      <property name="decimals">
-       <number>6</number>
-      </property>
+    <item row="8" column="5">
+     <widget class="QDoubleSpinBox" name="spinBox_pitch_gimbal">
       <property name="minimum">
-       <double>-2.000000000000000</double>
+       <double>-90.000000000000000</double>
       </property>
       <property name="maximum">
-       <double>2.000000000000000</double>
-      </property>
-      <property name="singleStep">
-       <double>0.001000000000000</double>
+       <double>90.000000000000000</double>
       </property>
      </widget>
     </item>
-    <item row="2" column="1">
-     <widget class="QCheckBox" name="checkBox_position">
-      <property name="text">
-       <string>Set position</string>
-      </property>
-      <property name="checked">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="6" column="1">
-     <widget class="QCheckBox" name="checkBox_orientation">
-      <property name="text">
-       <string>Set orientation</string>
-      </property>
-     </widget>
-    </item>
-    <item row="13" column="3">
-     <spacer name="verticalSpacer">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>40</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item row="9" column="2">
-     <widget class="QDoubleSpinBox" name="spinBox_yaw">
-      <property name="decimals">
-       <number>6</number>
-      </property>
+    <item row="9" column="5">
+     <widget class="QDoubleSpinBox" name="spinBox_yaw_gimbal">
       <property name="minimum">
-       <double>-3.141500000000000</double>
+       <double>-90.000000000000000</double>
       </property>
       <property name="maximum">
-       <double>3.141500000000000</double>
-      </property>
-      <property name="singleStep">
-       <double>0.010000000000000</double>
+       <double>90.000000000000000</double>
       </property>
      </widget>
     </item>
-    <item row="7" column="3">
-     <widget class="QSlider" name="horizontalSlider_roll">
-      <property name="maximum">
-       <number>100</number>
-      </property>
-      <property name="value">
-       <number>50</number>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-     </widget>
-    </item>
-    <item row="8" column="3">
-     <widget class="QSlider" name="horizontalSlider_pitch">
-      <property name="maximum">
-       <number>100</number>
-      </property>
-      <property name="value">
-       <number>50</number>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-     </widget>
-    </item>
-    <item row="9" column="3">
-     <widget class="QSlider" name="horizontalSlider_yaw">
-      <property name="maximum">
-       <number>100</number>
-      </property>
-      <property name="value">
-       <number>50</number>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-     </widget>
-    </item>
-    <item row="11" column="1">
-     <widget class="QPushButton" name="pushButton_plan_ag1">
+    <item row="11" column="5">
+     <widget class="QPushButton" name="pushButton_set_gimbal">
       <property name="text">
-       <string>Plan Agilus1</string>
-      </property>
-     </widget>
-    </item>
-    <item row="11" column="2">
-     <widget class="QPushButton" name="pushButton_move_ag1">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="text">
-       <string>Move Agilus1</string>
-      </property>
-     </widget>
-    </item>
-    <item row="12" column="2">
-     <widget class="QPushButton" name="pushButton_move_ag2">
-      <property name="text">
-       <string>Move Agilus2</string>
-      </property>
-     </widget>
-    </item>
-    <item row="12" column="1">
-     <widget class="QPushButton" name="pushButton_plan_ag2">
-      <property name="text">
-       <string>Plan Agilus2</string>
-      </property>
-     </widget>
-    </item>
-    <item row="11" column="3">
-     <widget class="QPushButton" name="pushButton_get_offset1">
-      <property name="text">
-       <string>GET OFFSET</string>
+       <string>Set Gimbal</string>
       </property>
      </widget>
     </item>

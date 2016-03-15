@@ -17,10 +17,17 @@
 *****************************************************************************/
 
 #include <ros/ros.h>
+#include <math.h>
 #include <string>
 #include <QThread>
 #include <QStringListModel>
+
 #include <qt_agilus_planner/Pose.h>
+#include <steadycam/getControlMode.h>
+#include <steadycam/setControlMode.h>
+#include <steadycam/getEulerAngles.h>
+#include <steadycam/setEulerAngles.h>
+
 #include <geometry_msgs/Pose2D.h>
 
 #include <eigen3/Eigen/Dense>
@@ -82,6 +89,7 @@ public Q_SLOTS:
                   bool orientation, double roll, double pitch, double yaw);
     void plan_ag2(bool relative, bool position, double x, double y, double z,
                   bool orientation, double roll, double pitch, double yaw);
+    void set_gimbal_angles(double roll, double pitch, double yaw);
 
 
 private:
@@ -91,9 +99,18 @@ private:
     ros::ServiceClient goToClient_ag2;
     ros::ServiceClient planClient_ag1;
     ros::ServiceClient planClient_ag2;
+
     qt_agilus_planner::Pose pose_service;
+
     ros::Subscriber object2Dpose1;
     ros::Subscriber object2Dpose2;
+
+    ros::ServiceClient getSteadycamControlMode;
+    ros::ServiceClient setSteadycamControlMode;
+    ros::ServiceClient getSteadycamEulerAngles;
+    ros::ServiceClient setSteadycamEulerAngles;
+
+    steadycam::setEulerAngles gimbal_euler;
 
     double x_object1;
     double y_object1;

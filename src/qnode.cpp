@@ -54,6 +54,11 @@ bool QNode::init() {
     planClient_ag1 = n.serviceClient<qt_agilus_planner::Pose>("/robot_service_ag1/plan_pose");
     planClient_ag2 = n.serviceClient<qt_agilus_planner::Pose>("/robot_service_ag2/plan_pose");
 
+    getSteadycamControlMode = n.serviceClient<steadycam::getControlMode>("/getControlMode");
+    setSteadycamControlMode = n.serviceClient<steadycam::setControlMode>("/setControlMode");
+    getSteadycamEulerAngles = n.serviceClient<steadycam::getEulerAngles>("/getEulerAngles");
+    setSteadycamEulerAngles = n.serviceClient<steadycam::setEulerAngles>("/setEulerAngles");
+
     object2Dpose1 = n.subscribe<geometry_msgs::Pose2D,QNode>("/object_2D_detected/object1", 1000, &QNode::object1PoseCallback,this);
     object2Dpose2 = n.subscribe<geometry_msgs::Pose2D,QNode>("/object_2D_detected/object2", 1000, &QNode::object2PoseCallback,this);
 
@@ -182,6 +187,14 @@ void QNode::plan_ag2(bool relative, bool position, double x, double y, double z,
     // Set service request parameters
     setPoseRequest(relative,position,x,y,z,orientation,roll,pitch,yaw);
     planClient_ag2.call(pose_service);
+}
+
+void QNode::set_gimbal_angles(double roll, double pitch, double yaw)
+{
+    gimbal_euler.request.angle_lock.x = (roll*M_PI)/180.0;
+    gimbal_euler.request.angle_lock.y = (yaw*M_PI)/180.0;
+    gimbal_euler.request.angle_lock.z = (pitch*M_PI)/180.0;
+    setSteadycamEulerAngles.call(gimbal_euler);
 }
 
 }

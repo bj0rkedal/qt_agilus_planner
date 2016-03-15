@@ -45,6 +45,8 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
                                                         bool,double,double,double)), &qnode,
                      SLOT(plan_ag2(bool,bool,double,double,double,
                                    bool,double,double,double)));
+    QObject::connect(this, SIGNAL(send_set_gimbal_angles_command(double,double,double)), &qnode,
+                     SLOT(set_gimbal_angles(double,double,double)));
     ui.pushButton_move_ag1->setEnabled(true);
     ui.pushButton_move_ag2->setEnabled(true);
     ui.pushButton_plan_ag1->setEnabled(true);
@@ -86,11 +88,16 @@ void MainWindow::on_pushButton_get_offset1_clicked()
 {
     std::vector<double> temp;
     temp = qnode.getobjectPose();
-    std::cout << temp.at(0) << std::endl;
-
     ui.spinBox_pos_x->setValue(-temp.at(1));
     ui.spinBox_pos_y->setValue(-temp.at(0));
 
+}
+
+void MainWindow::on_pushButton_set_gimbal_clicked()
+{
+    Q_EMIT send_set_gimbal_angles_command(ui.spinBox_roll_gimbal->value(),
+                                          ui.spinBox_pitch_gimbal->value(),
+                                          ui.spinBox_yaw_gimbal->value());
 }
 
 void MainWindow::on_horizontalSlider_pos_x_valueChanged(int i)
