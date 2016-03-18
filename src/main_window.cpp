@@ -47,10 +47,19 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
                                    bool,double,double,double)));
     QObject::connect(this, SIGNAL(send_set_gimbal_angles_command(double,double,double)), &qnode,
                      SLOT(set_gimbal_angles(double,double,double)));
+    QObject::connect(this, SIGNAL(send_set_gimbal_point_command(double,double,double)), &qnode,
+                     SLOT(set_gimbal_point(double,double,double)));
+    QObject::connect(this, SIGNAL(send_gimbal_control_mode_command(bool)), &qnode,
+                     SLOT(set_control_mode(bool)));
+    QObject::connect(this, SIGNAL(send_image_processor_command(bool,bool,bool,bool,std::string,std::string)),
+                     &qnode, SLOT(set_image_processor_mode(bool,bool,bool,bool,std::string,std::string)));
     ui.pushButton_move_ag1->setEnabled(true);
     ui.pushButton_move_ag2->setEnabled(true);
     ui.pushButton_plan_ag1->setEnabled(true);
     ui.pushButton_plan_ag2->setEnabled(true);
+
+    init_ui_elements();
+
     qnode.init();
 }
 
@@ -87,9 +96,10 @@ void MainWindow::on_pushButton_plan_ag2_clicked(){
 void MainWindow::on_pushButton_get_offset1_clicked()
 {
     std::vector<double> temp;
-    temp = qnode.getobjectPose();
+    temp = qnode.getobjectPose(ui.spinBox_lambda->value());
     ui.spinBox_pos_x->setValue(-temp.at(1));
     ui.spinBox_pos_y->setValue(-temp.at(0));
+    ui.spinBox_pos_z->setValue(0.0);
 
 }
 
@@ -98,6 +108,69 @@ void MainWindow::on_pushButton_set_gimbal_clicked()
     Q_EMIT send_set_gimbal_angles_command(ui.spinBox_roll_gimbal->value(),
                                           ui.spinBox_pitch_gimbal->value(),
                                           ui.spinBox_yaw_gimbal->value());
+}
+
+void MainWindow::on_pushButton_set_point_clicked()
+{
+    Q_EMIT send_set_gimbal_point_command(ui.spinBox_gimbal_point_x->value(),
+                                         ui.spinBox_gimbal_point_y->value(),
+                                         ui.spinBox_gimbal_point_z->value());
+}
+
+void MainWindow::on_pushButton_reset_position_clicked()
+{
+    ui.horizontalSlider_pos_x->setValue(50);
+    ui.horizontalSlider_pos_y->setValue(50);
+    ui.horizontalSlider_pos_z->setValue(50);
+}
+
+void MainWindow::on_pushButton_reset_orientation_clicked()
+{
+    ui.horizontalSlider_roll->setValue(50);
+    ui.horizontalSlider_pitch->setValue(50);
+    ui.horizontalSlider_yaw->setValue(50);
+}
+
+void MainWindow::on_pushButton_point_lock_clicked()
+{
+    ui.spinBox_gimbal_point_x->setEnabled(true);
+    ui.spinBox_gimbal_point_y->setEnabled(true);
+    ui.spinBox_gimbal_point_z->setEnabled(true);
+
+    ui.spinBox_roll_gimbal->setEnabled(false);
+    ui.spinBox_pitch_gimbal->setEnabled(false);
+    ui.spinBox_yaw_gimbal->setEnabled(false);
+
+    ui.pushButton_set_gimbal->setEnabled(false);
+    ui.pushButton_set_point->setEnabled(true);
+
+    Q_EMIT send_gimbal_control_mode_command(true);
+}
+
+void MainWindow::on_pushButton_angle_lock_clicked()
+{
+    ui.spinBox_gimbal_point_x->setEnabled(false);
+    ui.spinBox_gimbal_point_y->setEnabled(false);
+    ui.spinBox_gimbal_point_z->setEnabled(false);
+
+    ui.spinBox_roll_gimbal->setEnabled(true);
+    ui.spinBox_pitch_gimbal->setEnabled(true);
+    ui.spinBox_yaw_gimbal->setEnabled(true);
+
+    ui.pushButton_set_gimbal->setEnabled(true);
+    ui.pushButton_set_point->setEnabled(false);
+
+    Q_EMIT send_gimbal_control_mode_command(false);
+}
+
+void MainWindow::on_pushButton_set_detection_clicked()
+{
+    Q_EMIT send_image_processor_command(ui.checkBox_running->isChecked(),
+                                        ui.checkBox_color->isChecked(),
+                                        ui.checkBox_bruteforce->isChecked(),
+                                        ui.checkBox_undistort->isChecked(),
+                                        ui.comboBox_keypoint->currentText().toStdString(),
+                                        ui.comboBox_descriptor->currentText().toStdString());
 }
 
 void MainWindow::on_horizontalSlider_pos_x_valueChanged(int i)
@@ -139,7 +212,27 @@ void MainWindow::on_horizontalSlider_yaw_valueChanged(int i)
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-	QMainWindow::closeEvent(event);
+    QMainWindow::closeEvent(event);
+}
+
+void MainWindow::init_ui_elements()
+{
+    ui.comboBox_keypoint->clear();
+    ui.comboBox_keypoint->addItem("SIFT");
+    ui.comboBox_keypoint->addItem("SURF");
+    ui.comboBox_keypoint->addItem("FAST");
+    ui.comboBox_keypoint->addItem("STAR");
+    ui.comboBox_keypoint->addItem("BRISK");
+    ui.comboBox_keypoint->addItem("ORB");
+    ui.comboBox_keypoint->addItem("AKAZE");
+    ui.comboBox_descriptor->clear();
+    ui.comboBox_descriptor->addItem("SIFT");
+    ui.comboBox_descriptor->addItem("SURF");
+    ui.comboBox_descriptor->addItem("BRIEF");
+    ui.comboBox_descriptor->addItem("BRISK");
+    ui.comboBox_descriptor->addItem("FREAK");
+    ui.comboBox_descriptor->addItem("ORB");
+    ui.comboBox_descriptor->addItem("AKAZE");
 }
 
 }  // namespace qt_agilus_planner

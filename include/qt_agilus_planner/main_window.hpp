@@ -37,6 +37,8 @@ public:
 
 	void closeEvent(QCloseEvent *event); // Overloaded function
 
+    void init_ui_elements();
+
 public Q_SLOTS:
 
     void on_pushButton_move_ag1_clicked();
@@ -45,6 +47,12 @@ public Q_SLOTS:
     void on_pushButton_plan_ag2_clicked();
     void on_pushButton_get_offset1_clicked();
     void on_pushButton_set_gimbal_clicked();
+    void on_pushButton_set_point_clicked();
+    void on_pushButton_reset_position_clicked();
+    void on_pushButton_reset_orientation_clicked();
+    void on_pushButton_point_lock_clicked();
+    void on_pushButton_angle_lock_clicked();
+    void on_pushButton_set_detection_clicked();
     void on_horizontalSlider_pos_x_valueChanged(int i);
     void on_horizontalSlider_pos_y_valueChanged(int i);
     void on_horizontalSlider_pos_z_valueChanged(int i);
@@ -62,6 +70,11 @@ Q_SIGNALS:
     void send_plan_ag2_command(bool rel, bool pos, double x, double y, double z,
                                bool orient, double roll, double pitch, double yaw);
     void send_set_gimbal_angles_command(double roll, double pitch, double yaw);
+    void send_set_gimbal_point_command(double x, double y, double z);
+    void send_gimbal_control_mode_command(bool control);
+    void send_image_processor_command(bool running, bool color, bool bruteforce,
+                                      bool undistort, std::string keypoint,
+                                      std::string descriptor);
 private:
 	Ui::MainWindowDesign ui;
 	QNode qnode;

@@ -23,7 +23,7 @@ find_package(catkin REQUIRED COMPONENTS
 find_package(PkgConfig REQUIRED)
 pkg_search_module(EIGEN REQUIRED eigen3)
 
-find_package(OpenCV REQUIRED)
+find_package(OpenCV EXACT 3.1.0 REQUIRED)
 
 include_directories(${catkin_INCLUDE_DIRS})
 

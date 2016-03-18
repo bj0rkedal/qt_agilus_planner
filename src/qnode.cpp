@@ -58,9 +58,18 @@ bool QNode::init() {
     setSteadycamControlMode = n.serviceClient<steadycam::setControlMode>("/setControlMode");
     getSteadycamEulerAngles = n.serviceClient<steadycam::getEulerAngles>("/getEulerAngles");
     setSteadycamEulerAngles = n.serviceClient<steadycam::setEulerAngles>("/setEulerAngles");
+    getSteadycamPoint = n.serviceClient<steadycam::getPoint>("/getPoint");
+    setSteadycamPoint = n.serviceClient<steadycam::setPoint>("/setPoint");
 
     object2Dpose1 = n.subscribe<geometry_msgs::Pose2D,QNode>("/object_2D_detected/object1", 1000, &QNode::object1PoseCallback,this);
     object2Dpose2 = n.subscribe<geometry_msgs::Pose2D,QNode>("/object_2D_detected/object2", 1000, &QNode::object2PoseCallback,this);
+
+    setImageprocessorRunning = n.serviceClient<image_processor::setProcessRunning>("/object_2D_detection/getProcessRunning");
+    setImageprocessorColor = n.serviceClient<image_processor::setVideoColor>("/object_2D_detection/setVideoColor");
+    setImageprocessorUndistort = n.serviceClient<image_processor::setVideoUndistortion>("/object_2D_detection/setVideoUndistortion");
+    setImageprocessorBruteforce = n.serviceClient<image_processor::setBruteforceMatching>("/object_2D_detection/setBruteforceMatching");
+    setImageprocessorKeypoint = n.serviceClient<image_processor::setKeypointDetectorType>("/object_2D_detection/setKeypointDetectorType");
+    setImageprocessorDescriptor = n.serviceClient<image_processor::setDescriptorType>("/object_2D_detection/setDescriptorType");
 
     plan_ag1(1,1,0,0,0,1,0,0,0);
     plan_ag1(1,1,0,0,0,1,0,0,0);
@@ -103,8 +112,8 @@ void QNode::object1PoseCallback(const geometry_msgs::Pose2DConstPtr &msg)
     y_object1 = msg->y;
 }
 
-std::vector<double> QNode::getobjectPose(){
-    Eigen::Vector3d imageCoords = getNormImageCoords(x_object1, y_object1, 0.15, camera_matrix);
+std::vector<double> QNode::getobjectPose(double lambda){
+    Eigen::Vector3d imageCoords = getNormImageCoords(x_object1, y_object1, lambda, camera_matrix);
     std::vector<double> returnvalue;
     returnvalue.push_back(imageCoords(0));
     returnvalue.push_back(imageCoords(1));
@@ -195,6 +204,38 @@ void QNode::set_gimbal_angles(double roll, double pitch, double yaw)
     gimbal_euler.request.angle_lock.y = (yaw*M_PI)/180.0;
     gimbal_euler.request.angle_lock.z = (pitch*M_PI)/180.0;
     setSteadycamEulerAngles.call(gimbal_euler);
+}
+
+void QNode::set_gimbal_point(double x, double y, double z)
+{
+    gimbal_point.request.position_lock.x = x;
+    gimbal_point.request.position_lock.y = y;
+    gimbal_point.request.position_lock.z = z;
+    setSteadycamPoint.call(gimbal_point);
+}
+
+void QNode::set_control_mode(bool control)
+{
+    controlMode.request.controlMode = control;
+    setSteadycamControlMode.call(controlMode);
+}
+
+void QNode::set_image_processor_mode(bool running, bool color, bool bruteforce, bool undistort, std::string keypoint, std::string descriptor)
+{
+    ROS_INFO("-------New settings-------");
+    setImproRunning.request.running = running;
+    setVideoColor.request.color = color;
+    setVideoUndist.request.undistort = undistort;
+    setBF.request.bruteforce = bruteforce;
+    setKeypoint.request.type = keypoint;
+    setDecriptor.request.type = descriptor;
+
+    setImageprocessorColor.call(setVideoColor);
+    setImageprocessorUndistort.call(setVideoUndist);
+    setImageprocessorBruteforce.call(setBF);
+    setImageprocessorKeypoint.call(setKeypoint);
+    setImageprocessorDescriptor.call(setDecriptor);
+    setImageprocessorRunning.call(setImproRunning);
 }
 
 }
