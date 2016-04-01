@@ -103,6 +103,15 @@ void MainWindow::on_pushButton_get_offset1_clicked()
 
 }
 
+void MainWindow::on_pushButton_get_offset2_clicked()
+{
+    std::vector<double> temp;
+    temp = qnode.getobjectPose2(ui.spinBox_lambda->value());
+    ui.spinBox_pos_x->setValue(-temp.at(1));
+    ui.spinBox_pos_y->setValue(-temp.at(0));
+    ui.spinBox_pos_z->setValue(0.0);
+}
+
 void MainWindow::on_pushButton_set_gimbal_clicked()
 {
     Q_EMIT send_set_gimbal_angles_command(ui.spinBox_roll_gimbal->value(),
@@ -171,6 +180,32 @@ void MainWindow::on_pushButton_set_detection_clicked()
                                         ui.checkBox_undistort->isChecked(),
                                         ui.comboBox_keypoint->currentText().toStdString(),
                                         ui.comboBox_descriptor->currentText().toStdString());
+}
+
+void MainWindow::on_pushButton_home_ag1_clicked()
+{
+    ui.spinBox_pos_x->setValue(0.445);
+    ui.spinBox_pos_y->setValue(-0.6025);
+    ui.spinBox_pos_z->setValue(1.66);
+    ui.spinBox_roll->setValue(0);
+    ui.spinBox_pitch->setValue(3.1415);
+    ui.spinBox_yaw->setValue(0);
+    ui.checkBox_relative->setChecked(false);
+    ui.checkBox_position->setChecked(true);
+    ui.checkBox_orientation->setChecked(true);
+}
+
+void MainWindow::on_pushButton_home_ag2_clicked()
+{
+    ui.spinBox_pos_x->setValue(0.445);
+    ui.spinBox_pos_y->setValue(0.6025);
+    ui.spinBox_pos_z->setValue(1.66);
+    ui.spinBox_roll->setValue(0);
+    ui.spinBox_pitch->setValue(3.1415);
+    ui.spinBox_yaw->setValue(0);
+    ui.checkBox_relative->setChecked(false);
+    ui.checkBox_position->setChecked(true);
+    ui.checkBox_orientation->setChecked(true);
 }
 
 void MainWindow::on_horizontalSlider_pos_x_valueChanged(int i)

@@ -64,7 +64,7 @@ bool QNode::init() {
     object2Dpose1 = n.subscribe<geometry_msgs::Pose2D,QNode>("/object_2D_detected/object1", 1000, &QNode::object1PoseCallback,this);
     object2Dpose2 = n.subscribe<geometry_msgs::Pose2D,QNode>("/object_2D_detected/object2", 1000, &QNode::object2PoseCallback,this);
 
-    setImageprocessorRunning = n.serviceClient<image_processor::setProcessRunning>("/object_2D_detection/getProcessRunning");
+    setImageprocessorRunning = n.serviceClient<image_processor::setProcessRunning>("/object_2D_detection/setProcessRunning");
     setImageprocessorColor = n.serviceClient<image_processor::setVideoColor>("/object_2D_detection/setVideoColor");
     setImageprocessorUndistort = n.serviceClient<image_processor::setVideoUndistortion>("/object_2D_detection/setVideoUndistortion");
     setImageprocessorBruteforce = n.serviceClient<image_processor::setBruteforceMatching>("/object_2D_detection/setBruteforceMatching");
@@ -112,6 +112,12 @@ void QNode::object1PoseCallback(const geometry_msgs::Pose2DConstPtr &msg)
     y_object1 = msg->y;
 }
 
+void QNode::object2PoseCallback(const geometry_msgs::Pose2DConstPtr &msg)
+{
+    x_object2 = msg->x;
+    y_object2 = msg->y;
+}
+
 std::vector<double> QNode::getobjectPose(double lambda){
     Eigen::Vector3d imageCoords = getNormImageCoords(x_object1, y_object1, lambda, camera_matrix);
     std::vector<double> returnvalue;
@@ -120,9 +126,12 @@ std::vector<double> QNode::getobjectPose(double lambda){
     return (returnvalue);
 }
 
-void QNode::object2PoseCallback(const geometry_msgs::Pose2DConstPtr &msg)
-{
-
+std::vector<double> QNode::getobjectPose2(double lambda){
+    Eigen::Vector3d imageCoords = getNormImageCoords(x_object2, y_object2, lambda, camera_matrix);
+    std::vector<double> returnvalue;
+    returnvalue.push_back(imageCoords(0));
+    returnvalue.push_back(imageCoords(1));
+    return (returnvalue);
 }
 
 cv::Mat QNode::getCameraMatrix(const std::string path)

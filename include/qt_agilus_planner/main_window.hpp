@@ -46,6 +46,7 @@ public Q_SLOTS:
     void on_pushButton_plan_ag1_clicked();
     void on_pushButton_plan_ag2_clicked();
     void on_pushButton_get_offset1_clicked();
+    void on_pushButton_get_offset2_clicked();
     void on_pushButton_set_gimbal_clicked();
     void on_pushButton_set_point_clicked();
     void on_pushButton_reset_position_clicked();
@@ -53,6 +54,8 @@ public Q_SLOTS:
     void on_pushButton_point_lock_clicked();
     void on_pushButton_angle_lock_clicked();
     void on_pushButton_set_detection_clicked();
+    void on_pushButton_home_ag1_clicked();
+    void on_pushButton_home_ag2_clicked();
     void on_horizontalSlider_pos_x_valueChanged(int i);
     void on_horizontalSlider_pos_y_valueChanged(int i);
     void on_horizontalSlider_pos_z_valueChanged(int i);

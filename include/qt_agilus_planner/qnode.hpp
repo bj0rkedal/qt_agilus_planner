@@ -49,7 +49,7 @@
 
 #include "opencv2/core.hpp"
 
-const std::string CAMERA_PARAMS = "/home/asgeir/Documents/calibration_reserve_camera.yml";
+const std::string CAMERA_PARAMS = "/home/minions/Documents/calibration_reserve_camera.yml";
 
 /*****************************************************************************
 ** Namespaces
@@ -90,6 +90,7 @@ public:
     cv::Mat getCameraMatrix(const std::string path);
     Eigen::Vector3d getNormImageCoords(double x, double y, double lambda, cv::Mat camera_matrix);
     std::vector<double> getobjectPose(double lambda);
+    std::vector<double> getobjectPose2(double lambda);
 
 public Q_SLOTS:
     void setPoseRequest(bool relative, bool position,
@@ -165,9 +166,8 @@ private:
     image_processor::getDescriptorType getDecriptor;
     image_processor::setDescriptorType setDecriptor;
 
-    double x_object1;
-    double y_object1;
-    double lambda1;
+    double x_object1, x_object2;
+    double y_object1, y_object2;
     cv::Mat camera_matrix;
 
 };
