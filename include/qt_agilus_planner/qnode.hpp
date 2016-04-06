@@ -86,11 +86,9 @@ Q_SIGNALS:
 
 public:
     void object1PoseCallback(const geometry_msgs::Pose2DConstPtr &msg);
-    void object2PoseCallback(const geometry_msgs::Pose2DConstPtr &msg);
     cv::Mat getCameraMatrix(const std::string path);
     Eigen::Vector3d getNormImageCoords(double x, double y, double lambda, cv::Mat camera_matrix);
     std::vector<double> getobjectPose(double lambda);
-    std::vector<double> getobjectPose2(double lambda);
 
 public Q_SLOTS:
     void setPoseRequest(bool relative, bool position,
@@ -125,7 +123,6 @@ private:
     qt_agilus_planner::Pose pose_service;
 
     ros::Subscriber object2Dpose1;
-    ros::Subscriber object2Dpose2;
 
     // Steadycam
     ros::ServiceClient getSteadycamControlMode;
@@ -166,8 +163,8 @@ private:
     image_processor::getDescriptorType getDecriptor;
     image_processor::setDescriptorType setDecriptor;
 
-    double x_object1, x_object2;
-    double y_object1, y_object2;
+    double x_object1;
+    double y_object1;
     cv::Mat camera_matrix;
 
 };

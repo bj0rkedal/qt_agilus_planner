@@ -46,7 +46,6 @@ public Q_SLOTS:
     void on_pushButton_plan_ag1_clicked();
     void on_pushButton_plan_ag2_clicked();
     void on_pushButton_get_offset1_clicked();
-    void on_pushButton_get_offset2_clicked();
     void on_pushButton_set_gimbal_clicked();
     void on_pushButton_set_point_clicked();
     void on_pushButton_reset_position_clicked();

@@ -103,15 +103,6 @@ void MainWindow::on_pushButton_get_offset1_clicked()
 
 }
 
-void MainWindow::on_pushButton_get_offset2_clicked()
-{
-    std::vector<double> temp;
-    temp = qnode.getobjectPose2(ui.spinBox_lambda->value());
-    ui.spinBox_pos_x->setValue(-temp.at(1));
-    ui.spinBox_pos_y->setValue(-temp.at(0));
-    ui.spinBox_pos_z->setValue(0.0);
-}
-
 void MainWindow::on_pushButton_set_gimbal_clicked()
 {
     Q_EMIT send_set_gimbal_angles_command(ui.spinBox_roll_gimbal->value(),
