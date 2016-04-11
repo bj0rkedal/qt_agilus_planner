@@ -125,7 +125,7 @@ cv::Mat QNode::getCameraMatrix(const std::string path)
     cv::FileStorage fs(path, cv::FileStorage::READ);
     fs["camera_matrix"] >> temp;
     fs.release();
-
+    std::cout << temp << std::endl;
     return temp;
 }
 
