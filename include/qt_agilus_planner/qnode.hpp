@@ -43,11 +43,19 @@
 #include <image_processor/getDescriptorType.h>
 #include <image_processor/setDescriptorType.h>
 
+#include <moveit/move_group_interface/move_group.h>
+#include <moveit/planning_scene_interface/planning_scene_interface.h>
+
+#include <tf/tf.h>
+#include <tf/transform_datatypes.h>
+
 #include <geometry_msgs/Pose2D.h>
 
 #include <eigen3/Eigen/Dense>
 
 #include "opencv2/core.hpp"
+
+#include "robot_planning_execution.hpp"
 
 const std::string CAMERA_PARAMS = "/home/minions/Documents/calibration_reserve_camera.yml";
 
@@ -67,19 +75,7 @@ public:
 	QNode(int argc, char** argv );
 	virtual ~QNode();
 	bool init();
-	bool init(const std::string &master_url, const std::string &host_url);
 	void run();
-
-	/*********************
-	** Logging
-	**********************/
-	enum LogLevel {
-	         Debug,
-	         Info,
-	         Warn,
-	         Error,
-	         Fatal
-	 };
 
 Q_SIGNALS:
     void rosShutdown();
@@ -89,6 +85,10 @@ public:
     cv::Mat getCameraMatrix(const std::string path);
     Eigen::Vector3d getNormImageCoords(double x, double y, double lambda, cv::Mat camera_matrix);
     std::vector<double> getobjectPose(double lambda);
+    moveit::planning_interface::MoveGroup* getAgilus1();
+    moveit::planning_interface::MoveGroup* getAgilus2();
+    ih::RobotPlanningExecution* getRobot1();
+    ih::RobotPlanningExecution* getRobot2();
 
 public Q_SLOTS:
     void setPoseRequest(bool relative, bool position,
@@ -109,6 +109,12 @@ public Q_SLOTS:
     void set_image_processor_mode(bool running, bool color, bool bruteforce,
                                   bool undistort, std::string keypoint,
                                   std::string descriptor);
+    //moveit::planning_interface::MoveGroup* manipulator
+    void plan_test(ih::RobotPlanningExecution* robot, bool relative,
+                   double x, double y, double z, double roll, double pitch, double yaw);
+    void move_test(ih::RobotPlanningExecution* robot, bool relative,
+                   double x, double y, double z, double roll, double pitch, double yaw);
+    void home_test(ih::RobotPlanningExecution* robot);
 
 
 private:
@@ -167,6 +173,11 @@ private:
     double y_object1;
     cv::Mat camera_matrix;
 
+    moveit::planning_interface::MoveGroup *ag1; //!< Move group used to acquire manipulator pose for agilus 1.
+    moveit::planning_interface::MoveGroup *ag2; //!< Move group used to acquire manipulator pose for agilus 2.
+
+    ih::RobotPlanningExecution *robot1;
+    ih::RobotPlanningExecution *robot2;
 };
 
 }  // namespace qt_agilus_planner

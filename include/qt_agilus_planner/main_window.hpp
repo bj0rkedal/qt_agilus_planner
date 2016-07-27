@@ -55,6 +55,9 @@ public Q_SLOTS:
     void on_pushButton_set_detection_clicked();
     void on_pushButton_home_ag1_clicked();
     void on_pushButton_home_ag2_clicked();
+    void on_pushButton_testPlan_clicked();
+    void on_pushButton_testHome_clicked();
+    void on_pushButton_testMove_clicked();
     void on_horizontalSlider_pos_x_valueChanged(int i);
     void on_horizontalSlider_pos_y_valueChanged(int i);
     void on_horizontalSlider_pos_z_valueChanged(int i);
@@ -77,6 +80,11 @@ Q_SIGNALS:
     void send_image_processor_command(bool running, bool color, bool bruteforce,
                                       bool undistort, std::string keypoint,
                                       std::string descriptor);
+    void send_plan_test(ih::RobotPlanningExecution* robot, bool relative, double x, double y, double z,
+                        double roll, double pitch, double yaw);
+    void send_move_test(ih::RobotPlanningExecution* robot, bool relative, double x, double y, double z,
+                        double roll, double pitch, double yaw);
+    void send_home_test(ih::RobotPlanningExecution* robot);
 private:
 	Ui::MainWindowDesign ui;
 	QNode qnode;

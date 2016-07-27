@@ -75,23 +75,25 @@ bool QNode::init() {
     plan_ag2(1,1,0,0,0,1,0,0,0);
     plan_ag2(1,1,0,0,0,1,0,0,0);
 
+    try {
+        ag1 = new moveit::planning_interface::MoveGroup("agilus1");
+        ag2 = new moveit::planning_interface::MoveGroup("agilus2");
+        robot1 = new ih::RobotPlanningExecution("agilus1", 0.5, 5, 10, ih::ROBOT_OPTION_VERBOSE_INFO);
+        robot2 = new ih::RobotPlanningExecution("agilus2", 0.5, 5, 10, ih::ROBOT_OPTION_VERBOSE_INFO);
+
+        ROS_INFO("Reference planning frame \n\t agilus 1: %s \n\t agilus 2: %s",
+                 ag1->getPlanningFrame().c_str(),
+                 ag2->getPlanningFrame().c_str());
+        ROS_INFO("End-effector link frame \n\t agilus 1: %s \n\t agilus 2: %s",
+                 ag1->getEndEffectorLink().c_str(),
+                 ag2->getEndEffectorLink().c_str());
+    } catch(...) {
+
+    }
+
+
     camera_matrix = getCameraMatrix(CAMERA_PARAMS);
 
-	start();
-	return true;
-}
-
-bool QNode::init(const std::string &master_url, const std::string &host_url) {
-	std::map<std::string,std::string> remappings;
-	remappings["__master"] = master_url;
-	remappings["__hostname"] = host_url;
-	ros::init(remappings,"QT_agilus_planner");
-	if ( ! ros::master::check() ) {
-		return false;
-	}
-	ros::start(); // explicitly needed since our nodehandle is going out of scope.
-	ros::NodeHandle n;
-	// Add your ros communications here.
 	start();
 	return true;
 }
@@ -216,7 +218,6 @@ void QNode::set_control_mode(bool control)
 
 void QNode::set_image_processor_mode(bool running, bool color, bool bruteforce, bool undistort, std::string keypoint, std::string descriptor)
 {
-    ROS_INFO("-------New settings-------");
     setImproRunning.request.running = running;
     setVideoColor.request.color = color;
     setVideoUndist.request.undistort = undistort;
@@ -231,5 +232,52 @@ void QNode::set_image_processor_mode(bool running, bool color, bool bruteforce, 
     setImageprocessorDescriptor.call(setDecriptor);
     setImageprocessorRunning.call(setImproRunning);
 }
+
+void QNode::plan_test(ih::RobotPlanningExecution* robot, bool relative,
+                      double x, double y, double z, double roll, double pitch, double yaw)
+{
+    if(!relative) {
+        robot->planPosePTP(x,y,z,roll,pitch,yaw);
+    } else {
+        robot->planRelativePosePTP(x,y,z,roll,pitch,yaw);
+    }
+}
+
+void QNode::move_test(ih::RobotPlanningExecution* robot, bool relative,
+                      double x, double y, double z, double roll, double pitch, double yaw)
+{
+    if(!relative) {
+        robot->goToPosePTP(x,y,z,roll,pitch,yaw);
+    } else {
+        robot->goToRelativePosePTP(x,y,z,roll,pitch,yaw);
+    }
+}
+
+void QNode::home_test(ih::RobotPlanningExecution* robot)
+{
+    robot->homeRobot();
+}
+
+moveit::planning_interface::MoveGroup* QNode::getAgilus1()
+{
+    return this->ag1;
+}
+
+moveit::planning_interface::MoveGroup* QNode::getAgilus2()
+{
+    return this->ag2;
+}
+
+ih::RobotPlanningExecution* QNode::getRobot1()
+{
+    return this->robot1;
+}
+
+ih::RobotPlanningExecution* QNode::getRobot2()
+{
+    return this->robot2;
+}
+
+
 
 }

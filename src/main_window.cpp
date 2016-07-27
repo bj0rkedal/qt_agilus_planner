@@ -53,6 +53,11 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
                      SLOT(set_control_mode(bool)));
     QObject::connect(this, SIGNAL(send_image_processor_command(bool,bool,bool,bool,std::string,std::string)),
                      &qnode, SLOT(set_image_processor_mode(bool,bool,bool,bool,std::string,std::string)));
+    QObject::connect(this, SIGNAL(send_plan_test(ih::RobotPlanningExecution*,bool,double,double,double,double,double,double)), &qnode,
+                     SLOT(plan_test(ih::RobotPlanningExecution*,bool,double,double,double,double,double,double)));
+    QObject::connect(this, SIGNAL(send_move_test(ih::RobotPlanningExecution*,bool,double,double,double,double,double,double)), &qnode,
+                     SLOT(move_test(ih::RobotPlanningExecution*,bool,double,double,double,double,double,double)));
+    QObject::connect(this, SIGNAL(send_home_test(ih::RobotPlanningExecution*)), &qnode, SLOT(home_test(ih::RobotPlanningExecution*)));
     ui.pushButton_move_ag1->setEnabled(true);
     ui.pushButton_move_ag2->setEnabled(true);
     ui.pushButton_plan_ag1->setEnabled(true);
@@ -199,6 +204,61 @@ void MainWindow::on_pushButton_home_ag2_clicked()
     ui.checkBox_orientation->setChecked(true);
 }
 
+void MainWindow::on_pushButton_testPlan_clicked()
+{
+    if(ui.robotComboBox->currentIndex() == 0) {
+        Q_EMIT send_plan_test(qnode.getRobot1(),
+                              ui.checkBox_relative->isChecked(),
+                              ui.spinBox_pos_x->value(),
+                              ui.spinBox_pos_y->value(),
+                              ui.spinBox_pos_z->value(),
+                              ui.spinBox_roll->value(),
+                              ui.spinBox_pitch->value(),
+                              ui.spinBox_yaw->value());
+    } else {
+        Q_EMIT send_plan_test(qnode.getRobot2(),
+                              ui.checkBox_relative->isChecked(),
+                              ui.spinBox_pos_x->value(),
+                              ui.spinBox_pos_y->value(),
+                              ui.spinBox_pos_z->value(),
+                              ui.spinBox_roll->value(),
+                              ui.spinBox_pitch->value(),
+                              ui.spinBox_yaw->value());
+    }
+}
+
+void MainWindow::on_pushButton_testHome_clicked()
+{
+    if(ui.robotComboBox->currentIndex() == 0) {
+        Q_EMIT send_home_test(qnode.getRobot1());
+    } else {
+        Q_EMIT send_home_test(qnode.getRobot2());
+    }
+}
+
+void MainWindow::on_pushButton_testMove_clicked()
+{
+    if(ui.robotComboBox->currentIndex() == 0) {
+        Q_EMIT send_move_test(qnode.getRobot1(),
+                              ui.checkBox_relative->isChecked(),
+                              ui.spinBox_pos_x->value(),
+                              ui.spinBox_pos_y->value(),
+                              ui.spinBox_pos_z->value(),
+                              ui.spinBox_roll->value(),
+                              ui.spinBox_pitch->value(),
+                              ui.spinBox_yaw->value());
+    } else {
+        Q_EMIT send_move_test(qnode.getRobot2(),
+                              ui.checkBox_relative->isChecked(),
+                              ui.spinBox_pos_x->value(),
+                              ui.spinBox_pos_y->value(),
+                              ui.spinBox_pos_z->value(),
+                              ui.spinBox_roll->value(),
+                              ui.spinBox_pitch->value(),
+                              ui.spinBox_yaw->value());
+    }
+}
+
 void MainWindow::on_horizontalSlider_pos_x_valueChanged(int i)
 {
     double tmp = i/100.0;
@@ -243,6 +303,11 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 void MainWindow::init_ui_elements()
 {
+    QStringList manipulators;
+    manipulators.append("KUKA Agilus 1");
+    manipulators.append("KUKA Agilus 2");
+    ui.robotComboBox->addItems(manipulators);
+
     ui.comboBox_keypoint->clear();
     ui.comboBox_keypoint->addItem("SIFT");
     ui.comboBox_keypoint->addItem("SURF");
